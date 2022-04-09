@@ -3,7 +3,7 @@ Create tiles for your hubitat hub using maker api
 
 Simply dowload all the files at the root of your Hubitat's file manager interface and then, in any browser, open this address: 
 
-http://192.168.xx.xx/elfegeTiles.html (you can also put those files on a separate webserver and rename "elfegeTiles.html" as "index.html" to simplify the address and improve loading time, although probably not in a significant manner, depending on how busy your hub might already be. 
+http://192.168.xx.xx/local/elfegeTiles.html (you can also put those files on a separate webserver and rename "elfegeTiles.html" as "index.html" to simplify the address and improve loading time, although probably not in a significant manner, depending on how busy your hub might already be. 
 
 You will be prompted to enter your hubitat's maker API's number and access token as well as given the opportunity to tweak your preferences (especially in term of device ressoruces saving methods). From there, once you submit the form, you should see your tiles. 
 
