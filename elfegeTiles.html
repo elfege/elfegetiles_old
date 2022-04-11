@@ -547,7 +547,6 @@ button.off {
     var myPageTitle = window.localStorage.getItem('myPageTitle')
     var FirstStageRessourceSavingTimeout = window.localStorage.getItem('FirstStageRessourceSavingTimeout') 
     var firstStageRessourceSavingInterval =  window.localStorage.getItem('firstStageRessourceSavingInterval')
-    var FirstStageRessourceSavingTimeoutDone = window.localStorage.getItem('FirstStageRessourceSavingTimeoutDone')
     var RessourceSavingTime = window.localStorage.getItem('RessourceSavingTime'); 
     var ressourceSavingTimeout = window.localStorage.getItem('ressourceSavingTimeout')   
     var stopAllScripts = window.localStorage.getItem('stopAllScripts')
@@ -740,9 +739,6 @@ button.off {
       firstStageRessourceSavingInterval = document.getElementById("firstStageRessourceSavingInterval").value;
       window.localStorage.setItem('firstStageRessourceSavingInterval', firstStageRessourceSavingInterval);
 
-      // FirstStageRessourceSavingTimeoutDone = document.getElementById("FirstStageRessourceSavingTimeoutDone").value;
-      window.localStorage.setItem('FirstStageRessourceSavingTimeoutDone', false);
-
       RessourceSavingTime = document.getElementById("RessourceSavingTime").value;
       window.localStorage.setItem('RessourceSavingTime', RessourceSavingTime);
 
@@ -765,7 +761,7 @@ button.off {
     function getPreferences()
     {
 
-     prefList = [access_token, ip, appNumber, myPageTitle, FirstStageRessourceSavingTimeout, firstStageRessourceSavingInterval, FirstStageRessourceSavingTimeoutDone, RessourceSavingTime, ressourceSavingTimeout, stopAllScripts, stopAllScriptsTimeout, labelLength]; 
+     prefList = [access_token, ip, appNumber, myPageTitle, FirstStageRessourceSavingTimeout, firstStageRessourceSavingInterval, RessourceSavingTime, ressourceSavingTimeout, stopAllScripts, stopAllScriptsTimeout, labelLength]; 
 
      var someNull = prefList.some(element => element == null) || prefList.some(element => element == "null") 
      console.log(prefList)
@@ -821,7 +817,7 @@ button.off {
             <td><textarea id="RessourceSavingTime" onchange="testNumber(id)"> </textarea></td> 
           </tr>
           <tr>
-            <td><SPAN style="color:white">Second level sleep timeout (in seconds)</SPAN></td>
+            <td><SPAN style="color:white">Second level sleep timeout (in hours)</SPAN></td>
             <td><textarea id="ressourceSavingTimeout" onchange="testNumber(id)"></textarea> </td> 
           </tr>
           <tr>
@@ -881,25 +877,26 @@ button.off {
 
     function setDefaultPreferences()
     {
-      
-      /* modify this section with your settings to prevent having to enter the access token on all my devices after every test*/
+       /* modify this section with your settings to prevent having to enter the access token on all my devices after every test*/
       /* this will allow you to simply hit the "set default values" on the configuration page, instead of having to re-enter your access token 
       on every device you might use to display the tiles*/
+      /*
       document.getElementById("access_token").value = "";
       document.getElementById("ip").value = "";
       document.getElementById("appNumber").value = "";
-
-      /*Do not modify anything below*/
+      */
+      
+      /*Do not modify anything in the section below unless you know what you're doing*/
       console.log("setting default values")
 
       document.getElementById("myPageTitle").value = "SMART HOME INTERFACE";
-      document.getElementById("FirstStageRessourceSavingTimeout").value = "30";
-      document.getElementById("firstStageRessourceSavingInterval").value = "10";
-      document.getElementById("RessourceSavingTime").value = "120";
-      document.getElementById("ressourceSavingTimeout").value = "1"
-      document.getElementById("stopAllScripts").value = false;
-      document.getElementById("stopAllScriptsTimeout").value = "2"
-      document.getElementById("labelLength").value = "18";
+      document.getElementById("FirstStageRessourceSavingTimeout").value = "30"; // in seconds
+      document.getElementById("firstStageRessourceSavingInterval").value = "10"; // in seconds
+      document.getElementById("RessourceSavingTime").value = "120"; // in seconds
+      document.getElementById("ressourceSavingTimeout").value = "1" // in hours
+      document.getElementById("stopAllScripts").value = false; 
+      document.getElementById("stopAllScriptsTimeout").value = "2" // in hours
+      document.getElementById("labelLength").value = "18"; // number of characters
     }
 
     function testNumber(id)
@@ -1017,8 +1014,8 @@ button.off {
       var checkModeInterval = setInterval(function(){getMode();}, 10000);  
       toggleDebug(true)
       document.getElementById("pageTitle").innerHTML = myPageTitle;
-      setTimeout(function(){ setRefreshInterval(true); }, FirstStageRessourceSavingTimeout * 1000);
-      setRefreshInterval(true); //set refresh interval
+      setTimeout(function(){ setRefreshInterval("reset"); }, FirstStageRessourceSavingTimeout * 1000);
+      setRefreshInterval("reset"); //set refresh interval
       setTimeout(function(){refresh("buildButtons()/init()");}, 3000);
       for (var i = 0; i < s ; i++) 
       {
@@ -1137,7 +1134,7 @@ button.off {
       }
 
 
-      setTimeout(function() {setRefreshInterval(false);}, 1000);
+      setTimeout(function() {setRefreshInterval("reset");}, 1000);
       setTimeout(function(){mouseEventListener();}, 1000) 
       setTimeout(function(){eventListeners();}, 1000)
       initialized = true;     
@@ -1581,7 +1578,7 @@ button.off {
     /******************************* DEVICE COMMANDS**************************************/
     function setLevel(id, value)
     {
-      setRefreshInterval(false); // resume normal interval
+      setRefreshInterval("reset"); // resume normal interval
       logging(value+" "+id);      
       var data = switchStateValues.get(id) // we collect last values to append the level value to this device's last states
       var lastLabel = data[0]
@@ -1614,7 +1611,7 @@ button.off {
     function toggleDevice(cmd, id) 
     { 
       console.log("toggle "+cmd+" "+id)
-      setRefreshInterval(false); // resume normal interval
+      setRefreshInterval("reset"); // resume normal interval
       var trueId = id.includes("button") ? id.replace("button", "") : id.includes("dimmer") ? id.replace("dimmer", "") : id 
       logging(switchStateValues)
       var data = switchStateValues.get(id);
@@ -1702,7 +1699,7 @@ button.off {
     function mouseEventListener() {
       document.getElementById("mainDiv").addEventListener("mousemove", function(event) {
         logging("...")
-      setRefreshInterval(false); // resume normal interval
+      setRefreshInterval("reset"); // resume normal interval
     });
       console.log("event listner")
     };
@@ -1769,40 +1766,38 @@ button.off {
     };  
 
     /******************************* INTERVALS AND TIMEOUTS MANAGEMENT*************************/
-    function setRefreshInterval(clear)
+    function setRefreshInterval(param)
     {  
+
+      console.log("setRefreshInterval param: '"+param+"'");
       var refreshState = "NA";
       var refInterval = 0;
-      if(clear != true) // short interval - set at boot then after resume from saving modes
-      {
-        clearAllIntervals()
-        logging("Short ressource interval")
+      clearAllIntervals()
+      if(param == "reset") // short interval - set at boot then after resume from saving modes
+      {        
+        // console.log("Short ressource interval")
         refInterval = ShortRefreshTime * 1000;
-        FirstStageRessourceSavingTimeoutDone = false; // allow for first stage ressource saving interval
         interval1 = setInterval(function(){refreshAll("interval1");}, refInterval);
-        timeoutRessourceSaving = setTimeout(function(){ setRefreshInterval(true); }, FirstStageRessourceSavingTimeout * 1000); // reset timeout
+        timeoutRessourceSaving = setTimeout(function(){ setRefreshInterval("firstStage"); }, FirstStageRessourceSavingTimeout * 1000); // reset timeout
       }
-      else if(clear == true && FirstStageRessourceSavingTimeoutDone != true) // first stage ressource saving
+      else if(param == "firstStage") // first stage ressource saving
       {
-        clearAllIntervals()
-        logging("First stage ressource interval")
+        // console.log("First stage ressource saving interval")
         refInterval = firstStageRessourceSavingInterval * 1000;
-        FirstStageRessourceSavingTimeoutDone = true; // remember this is done
         interval2 = setInterval(function(){refreshAll("interval2");}, refInterval); // set interval refresh of n seconds
-        timeoutRessourceSaving = setTimeout(function(){ setRefreshInterval(true); }, ressourceSavingTimeout * 1000 * 60); // schedule the next refresh intervals
+        timeoutRessourceSaving = setTimeout(function(){ setRefreshInterval("secondStage"); }, ressourceSavingTimeout * 1000 * 60 * 60); // schedule the next refresh intervals
       }
-      else if(clear == true) //Ressourcesaving mode
-      {    
+      else if(param == "secondStage") //Ressourcesaving mode
+      {   
+        // console.log("Second ressource saving interval") 
         refInterval = RessourceSavingRefreshInterval * 1000;
-        clearAllIntervals()  
         interval3 = setInterval(function(){refreshAll("interval3");}, refInterval); // set interval refresh of n seconds
-        logging("Long ressource interval")
       }
       
-      if(refInterval === NaN) refInterval = 17; 
+      if(refInterval === NaN) refInterval = 4; 
 
       refreshState = "refresh rate is "+refInterval/1000+" seconds"; // value to display on top of the page
-      logging(refreshState)
+      console.log(refreshState)
       var ob = document.getElementById("refreshRateMessage")
       if(ob != undefined) ob.innerHTML = refreshState;  
 
@@ -1810,7 +1805,7 @@ button.off {
       {
         setTimeout(function(){clearAllIntervals();}, stopAllScriptsTimeout * 1000 * 60 * 60)
         clearTimeout(timeoutRessourceSaving);
-        logging("All scripts will be stopped after "+stopAllScriptsTimeout+" hours");
+        console.log("All scripts will be stopped after "+stopAllScriptsTimeout+" hours");
       }
     };
 
