@@ -1,6 +1,8 @@
 # elfegetiles
 Create tiles for your hubitat hub using maker api
 
+WebApp Optimized to be used with webkit based browsers such as Safari or Chrome. It does not work very well (yet) with FireFox, although if you don't have any dimmer you shouldn't feel the difference. 
+
 Simply dowload all the files at the root of your Hubitat's file manager interface and then, in any browser, open this address: 
 
 http://192.168.xx.xx/local/elfegeTiles.html (you can also put those files on a separate webserver and rename "elfegeTiles.html" as "index.html" to simplify the address and improve loading time, although probably not in a significant manner, depending on how busy your hub might already be. 
