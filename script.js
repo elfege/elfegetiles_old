@@ -1,542 +1,3 @@
-<!DOCTYPE html>
-<html>
-<style>
-  :root {
-    --buttonSize:80px;
-    --tdSize: calc(var(--buttonSize)* 2);
-    --buttonGroupMargin: 2px;
-    --sliderSpanTDmarginLEFT: 5px; 
-    --sliderSpanTDmarginRIGHT: 7px; 
-    --sliderLength: 150px; /*calc(var(--buttonSize) * 2); /*buttonSize x 2 */
-    --sliderLengthHover: calc(var(--sliderLength) + 20px);;
-    --sliderWidth: 10px;
-    --buttonFontSize:12px;
-    --fontSize:20px;
-    --fontColor:#0B0B0A;
-    --buttonColor:#64AEB1;
-    --defautlRadiusVal: 15px;
-    --hoverRadiusVal: 30px;
-    --buttonTransition:  0.5s;
-    --headerButtonHeight: 25px;
-    --headerButtonWidth: var(--buttonSize);
-
-    --backgroundColor: linear-gradient(0deg, rgba(131,58,180,1) 0%, rgba(86,57,78,1) 29%, rgba(253,48,29,1) 100%, rgba(252,176,69,1) 100%);
-    --backgroundColor2: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 33%, rgba(0,212,255,1) 100%);
-    --backgroundColor3: linear-gradient(0deg, rgba(131,58,180,1) 0%, rgba(86,57,78,1) 29%, rgba(253,48,29,1) 100%); 
-    --backgroundColor4: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(63,184,154,1) 0%, rgba(0,212,255,1) 100%);
-    --backgroundColor5: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(84,75,141,1) 0%, rgba(0,212,255,1) 100%);
-    --backgroundColorSliderRamp: red;
-
-    --buttonOffHover: yellow;   /*"linear-gradient(45deg, #F1F116, #D5D536, #B6B644, #92921C, #E0310E)";*/
-    --buttonOnHover: darkgrey;  /*"linear-gradient(45deg, #5E6060, #517979, #3E9D9D, #31BCBC, #18A2E0)";*/ 
-    --buttonOff: darkgrey;      /*"linear-gradient(45deg, #5E6060, #517979, #3E9D9D, #31BCBC, #18A2E0)";*/ 
-    --buttonOn:  white;         /*"linear-gradient(45deg, #F1F116, #D5D536, #B6B644, #92921C, #E0310E)";*/
-  }
-  body {
-    zoom: 1 ;
-    /*background-image: url("/local/img1.jpg");*/
-    background-repeat: no-repeat;
-    background-size: 100%;
-    background-color: blue;
-    height: 100vh;
-    margin: 0;
-    background-attachment: fixed;
-    opacity: 1;
-    /*cursor: move;*/
-  }
-  table {
-    width:100%;
-    border: 0px solid white;
-    padding: 0px;
-    text-align: center;
-    opacity: 1;
-  }
-  tr {
-    border: 0px solid white;
-  }
-  td {
-    border: 0px solid white;
-
-  }
-  div {
-    margin-left: 5px;
-    margin-right: 5px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-  }      
-  @media screen and (-webkit-min-device-pixel-ratio:0) {
-    input[type=range]/*[orient=vertical]*/
-    {
-     /*writing-mode: bt-lr; works but... WON'T ALLOW ANY COLOR DYN UPDATE /* IE */
-     /*-webkit-appearance: slider-vertical; /* Chromium */ 
-     transform: rotate(270deg);
-     /*overflow: hidden;*/
-     width:var(--sliderLength);
-     height: 5px;       
-     -webkit-appearance: none;
-     background-color: #9a905d;
-
-   }
-   input[type=”range”]::-webkit-slider-thumb
-   {
-    width: 10px;
-    -webkit-appearance: none;
-    height: 15px; /* thumb larger than track*/
-    cursor: ew-resize;
-    background: #434343;
-    box-shadow: -80px 0 0 80px #43e5f7;
-  }
-  input[type=”range”]::-webkit-slider-runnable-track
-  {
-    height: 10px;
-    -webkit-appearance: none;
-    color: #13bba4;
-    margin-top: -1px;
-  }
-}
-/* FF*/
-input[type="range"]::-moz-range-progress {
-  background-color: #43e5f7; 
-}
-input[type="range"]::-moz-range-track {  
-  background-color: #9a905d;
-}
-/* IE*/
-input[type="range"]::-ms-fill-lower {
-  background-color: #43e5f7; 
-}
-input[type="range"]::-ms-fill-upper {  
-  background-color: #9a905d;
-}
-.sliderSpanName {
-  vertical-align: top;
-  horizontal-align: left;
-  color: white;
-  font-size: relative;
-}
-.sliderSpanVal {
-  vertical-align: top;
-  font-size: 10px;
-  font-weight: bold;
-  color: yellow;
-}
-h1 {
-  color: var(--fontColor); 
-}
-.buttonName {
-  color: var(--fontColor);
-  font-size: 30px;
-}
-h2 {
-  color:var(--fontColor);  
-}
-.column {
-  float: left;
-  width: 10%;
-  padding: 5px;
-}
-
-/* Clearfix (clear floats) */
-.row::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-button {
-  vertical-align: top;
-  border-radius: var(--defautlRadiusVal);
-  display: block;      
-  transition-duration: var(--buttonTransition);
-  border: 0px;
-  width:  var(--buttonSize);
-  height: var(--buttonSize);
-  margin-left:0;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  display: inline-block;
-  /*display: block;*/
-  font-size: relative; /*var(--buttonFontSize);*/
-  color:var(--fontColor);/*font color*/
-  outline-offset: 4px;
-  margin-left: var(--buttonGroupMargin);
-  margin-right: var(--buttonGroupMargin);
-  margin-bottom: var(--buttonGroupMargin);
-  margin-top: var(--buttonGroupMargin);
-}
-button::after { 
-
-}
-button.on{
-  background-color: var(--buttonOn);
-  color: black;
-  transition-duration: var(--buttonTransition);
-}
-button.off {
-  background-color: var(--buttonOff);
-  color: black; 
-  transition-duration: var(--buttonTransition);
-}
-/*hover is sticky on iphone */
-@media (hover: hover) { 
-  button:hover{
-    background-color: grey; 
-    border-radius: var(--hoverRadiusVal);
-    transition-duration: 0.5s;  
-  }
-}
-.buttonBulb { 
- /*inherits from button class*/
-}
-.buttonBulb::after {
-  background-color: rgba(255,255,255,255,0);
-  content: "";
-  clear: both;
-  display: block;
-  padding:15px;
-  margin-top: -20px;
-  margin-left:0px;
-  margin-right:0px;
-  border: 0px solid #000000;  
-  background-position: center;
-}
-.buttonBulb.on::after{
-  background-color: rgba(255,255,255,255,0);
-  background-image: url("/local/lightOn.png");
-  background-repeat: no-repeat;
-  transition-duration: var(--buttonTransition);
-}
-.buttonBulb.off::after{
-  background-color: rgba(255,255,255,255,0);
-  background-image: url("/local/lightOff.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  transition-duration: var(--buttonTransition);
-}  
-@media (hover: hover) {
-  .buttonBulb:hover { 
-    background-color: rgba(255,255,255,255,0);   
-    color: black;
-    border-radius: var(--hoverRadiusVal);
-    transition-duration: 0.5s; 
-  }
-  .buttonBulb:hover.off::after {
-    background-color: rgba(255,255,255,255,0);
-    background-image: url("/local/lightOn.png");
-    border-radius: var(--hoverRadiusVal);
-    transition-duration: 0.5s; 
-  }
-  .buttonBulb:hover.on::after {
-    background-color: rgba(255,255,255,255,0);
-    background-image: url("/local/lightOff.png");
-    border-radius: var(--hoverRadiusVal);
-    transition-duration: 0.5s; 
-  }
-}    
-.buttonContact::after {
-  background-color: rgba(255,255,255,255,0);
-  content: "";
-  clear: both;
-  display: block;
-  padding:10px;
-  margin-left:25px;
-  margin-right:30px;
-  border: 0px solid #000000;
-}
-.buttonContact.on::after{
-      /*content:"open";
-      align-content: center;*/
-      color: red;
-      background-color: rgba(255,255,255,255,0);
-      background-image: url("/local/windowOpen.png");
-      background-position: center;
-      background-repeat: no-repeat;
-      transition-duration: var(--buttonTransition);
-    }
-    .buttonContact.off::after{
-      /*color: black;*/
-      background-color: rgba(255,255,255,255,0);
-      background-image: url("/local/windowClosed.png");
-      background-position: center;
-      background-repeat: no-repeat;
-      transition-duration: var(--buttonTransition);
-    }  
-    @media (hover: hover) {
-      .buttonContact:hover { 
-        background-color: rgba(255,255,255,255,0);   
-        color: black;
-        border-radius: var(--hoverRadiusVal);
-        transition-duration: 0.5s; 
-      }
-      .buttonContact:hover.off::after {
-        background-color: rgba(255,255,255,255,0);
-        background-image: url("/local/windowOpen.png");
-        background-position: right;
-        background-position: right;
-        transition-duration: 0.5s; 
-      }
-      .buttonContact:hover.on::after {
-        background-color: rgba(255,255,255,255,0);
-        background-image: url("/local/windowClosed.png");
-        background-position: right;
-        background-position: right;
-        transition-duration: 0.5s; 
-      }
-    }
-    .buttonFan::after {
-      background-color: rgba(255,255,255,255,0);
-      content: "";
-      clear: both;
-      display: block;
-      padding:20px;
-      margin-left:20px;
-      margin-right:30px;
-      border: 0px solid #000000;
-    }
-    .buttonFan.on::after{
-      color: red;
-      background-color: rgba(255,255,255,255,0);
-      background-image: url("/local/fan.gif");
-      background-position: center;
-      background-repeat: no-repeat;
-      transition-duration: var(--buttonTransition);
-    }
-    .buttonFan.off::after{
-      /*color: black;*/
-      background-color: rgba(255,255,255,255,0);
-      background-image: url("/local/fan.png");
-      background-position: center;
-      background-repeat: no-repeat;
-      transition-duration: var(--buttonTransition);
-    }  
-    @media (hover: hover) {
-      .buttonFan:hover { 
-        background-color: rgba(255,255,255,255,0);   
-        color: black;
-        border-radius: var(--hoverRadiusVal);
-        transition-duration: 0.5s; 
-      }
-      .buttonFan:hover.off::after {
-        background-color: rgba(255,255,255,255,0);
-        background-image: url("/local/fan.png");
-        background-position: center;
-        transition-duration: 0.5s; 
-      }
-      .buttonFan:hover.on::after {
-        background-color: rgba(255,255,255,255,0);
-        background-image: url("/local/fan.gif");
-        background-position: center;
-        transition-duration: 0.5s; 
-      }
-    }
-
-    .buttonCam::after {
-      background-color: rgba(255,255,255,255,0);
-      content: "";
-      clear: both;
-      display: block;
-      padding:20px;
-      margin-left:20px;
-      margin-right:30px;
-      border: 0px solid #000000;
-    }
-    .buttonCam.on::after{
-      color: red;
-      background-color: rgba(255,255,255,255,0);
-      background-image: url("/local/camera.png");
-      background-position: center;
-      background-repeat: no-repeat;
-      transition-duration: var(--buttonTransition);
-    }
-    .buttonCam.off::after{
-      /*color: black;*/
-      background-color: rgba(255,255,255,255,0);
-      background-image: url("/local/camera.png");
-      background-position: center;
-      background-repeat: no-repeat;
-      transition-duration: var(--buttonTransition);
-    }  
-    @media (hover: hover) {
-      .buttonCam:hover { 
-        background-color: rgba(255,255,255,255,0);   
-        color: black;
-        border-radius: var(--hoverRadiusVal);
-        transition-duration: 0.5s; 
-      }
-      .buttonCam:hover.off::after {
-        background-color: rgba(255,255,255,255,0);
-        background-image: url("/local/camera.png");
-        background-position: center;
-        transition-duration: 0.5s; 
-      }
-      .buttonCam:hover.on::after {
-        background-color: rgba(255,255,255,255,0);
-        background-image: url("/local/camera.png");
-        background-position: center;
-        transition-duration: 0.5s; 
-      }
-    }
-
-    .headerButton {
-      vertical-align: top;
-      display: block;
-      border-radius: var(--defautlRadiusVal);
-      transition-duration: var(--buttonTransition);
-      border: 0px;
-      width: var(--buttonSize);
-      height: var(--headerButtonHeight);
-      margin-left:0;
-      text-align: center;
-      text-decoration: none;
-      cursor: pointer;
-      display: inline-block;
-      /*display: block;*/
-      font-size: 8px; /*var(--buttonFontSize);*/
-      color:var(--fontColor);/*font color*/
-      outline-offset: 4px;
-      margin-left: var(--buttonGroupMargin);
-      margin-right: var(--buttonGroupMargin);
-      margin-bottom: var(--buttonGroupMargin);
-      margin-top: var(--buttonGroupMargin);
-    }    
-    .lockButton {    
-      padding: 0px;    
-      color: var(--fontColor);/*font color*/
-      border-radius: 0px;
-      border: 0px;
-      width:  100px;
-      height: 25px;
-      margin-left:0;
-      text-align: center;
-      text-decoration: none;
-      cursor: pointer;
-      /*display: inline-block;*/
-      font-size: 8px;
-      outline-offset: 0px; 
-    }
-    .text {
-      vertical-align: top;
-      padding: 0px;
-      background-color: var(--buttonOn);
-      color: black;
-      border-radius: 0px;
-      border: 0px;
-      width:  25px;
-      height: var(--headerButtonHeight);
-      margin-left:0;
-      text-align: inherit;
-      text-decoration: none;
-      cursor: pointer;
-      /*display: inline-block;*/
-      font-size: 8px;
-      /*color:var(--fontColor);/*font color*/
-      outline-offset: 4px;
-    }
-    .watttext {
-      background-color: var(--backgroundColor); /*var(--buttonOff);*/
-      border-radius: 0px;
-      color: white;
-      width: 160px;
-      height: 25px;
-      font-size: relative;
-    }
-    span {
-      color: white;
-      float: right;
-      cursor: pointer;
-      margin-left: 5px;
-      margin-right: 5px;
-      margin-top: 10px;
-     /* word-wrap: break-word;
-      word-break: break-all;*/
-    }
-    .headerspan {
-      
-      
-    }
-    .textForm {
-      vertical-align: top;
-      padding: 0px;
-      background-color: var(--buttonOn);
-      color: black;
-      border-radius: 0px;
-      border: 1px solid black;
-      width:  200px;
-      height: var(--headerButtonHeight);
-      margin-left:0;
-      text-align: inherit;
-      text-decoration: none;
-      cursor: pointer;
-      /*display: inline-block;*/
-      font-size: 8px;
-      /*color:var(--fontColor);/*font color*/
-      outline-offset: 4px;
-    }
-
-    form {
-      overflow: hidden;
-    }
-    input {
-      float: center;
-      clear: both;
-      margin-left: 5px;
-      margin-right: 5px;
-      margin-top: 10px;
-    }
-
-    textarea {
-      float: left;
-      clear: both;
-      margin-left: 5px;
-      margin-right: 5px;
-      margin-top: 10px;
-      width: 300px;
-    }
-
-    
-
-  </style>
-  <head>
-    <title>SMART HOME INTERFACE</title>  
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="viewport" content="initial-scale=1.0">
-    <meta name="viewport" content="maximum-scale=1.0">
-    <meta name="viewport" content="user-scalable=no">
-    <meta name="viewport" content="width=device-width">
-    <link rel="apple-touch-icon-precomposed" href="http://elfege.com/penrose.jpg">
-    <link rel="apple-touch-startup-image" href="http://elfege.com/penrose.jpg">
-    <center> 
-      <div> 
-      <h4 id="pageTitle" style="color:black; font-size: relative;">SMART HOME INTERFACE</h4>   
-      </div> 
-      <div id="locks"></div>
-      <div>
-        <input  class="text" style='float:right;' id="refreshRate" value=""> 
-        <SPAN style='text-align: left; float:right; color:white' id="submitBtnRefreshRate" onclick="defineShortRefreshRate()">set refresh rate:</SPAN>
-      </div>
-      <div>     
-        <button class="headerButton" id="reload" onclick="backgroundCss(true)"> Change Theme </button>                  
-        <button class="headerButton" id="homepower";> </button>
-        <button class="headerButton" id="powerSwitches";> </button>
-        <button class="headerButton" onclick='resetPreferences()'>Reset prefs.</button>
-        <button class="headerButton" id="reload" onclick="location.reload()"> RELOAD </button> 
-        <button class="headerButton" id="thermsotats" onclick="window.open('/thermostats.html','_blank')"> Thermostats </button> 
-        <button class="headerButton" id="refreshALl" onclick="refreshAll('userRequest')"> REFRESH </button> 
-        <button class="headerButton" id="debugbtn" onclick="toggleDebug()">DEBUG</button>
-      </div>
-    </center>
-  </head>
-  <body onload="getPreferences()"> 
-    <center>
-      <div id="mainDiv">      
-        <div style="float:left;" id="buttons"></div>
-        <div style="float:left;" id="dimmers"></div>     
-      </div>
-    </center>
-  </body>
-
-  <script>
 
     /***************************************PREFERENCES*****************************/
     //SET YOUR PREFERENCES
@@ -544,7 +5,6 @@ button.off {
     var access_token = window.localStorage.getItem('access_token');
     var ip = window.localStorage.getItem('ip')
     var appNumber = window.localStorage.getItem('appNumber')
-    var myPageTitle = window.localStorage.getItem('myPageTitle')
     var FirstStageRessourceSavingTimeout = window.localStorage.getItem('FirstStageRessourceSavingTimeout') 
     var firstStageRessourceSavingInterval =  window.localStorage.getItem('firstStageRessourceSavingInterval')
     var RessourceSavingTime = window.localStorage.getItem('RessourceSavingTime'); 
@@ -553,18 +13,41 @@ button.off {
     var stopAllScriptsTimeout = window.localStorage.getItem('stopAllScriptsTimeout') 
     var labelLength = window.localStorage.getItem('labelLength')
    
+    /*** BACKUP YOUR DEFAULT PREFERENCES INSIDE THE 'setDefaultPreferences()' FUNCTION BELOW*******/
+    /************* I'LL PUSH AN UPDATE WITH A MORE ELEGANT SOLUTION SOME TIME SOON ****************/
+
+    function setDefaultPreferences()
+    {
+      /* 
+      modify this section with your settings to prevent having to enter the access token on all my devices after every test
+      this will allow you to simply hit the "set default values" on the configuration page, instead of having to re-enter your access token 
+      on every device you might use to display the tiles
+      */
+      /*
+      document.getElementById("access_token").value = "";
+      document.getElementById("ip").value = "";
+      document.getElementById("appNumber").value = "";
+      */
+      
+
+      /*Do not modify anything below*/
+      console.log("setting default values")
+      document.getElementById("FirstStageRessourceSavingTimeout").value = "30"; // in seconds
+      document.getElementById("firstStageRessourceSavingInterval").value = "10"; // in seconds
+      document.getElementById("RessourceSavingTime").value = "120"; // in seconds
+      document.getElementById("ressourceSavingTimeout").value = "1" // in hours
+      document.getElementById("stopAllScripts").value = false; 
+      document.getElementById("stopAllScriptsTimeout").value = "2" // in hours
+      document.getElementById("labelLength").value = "18"; // number of characters
+    }
 
     /********************************************************************************/
     /****************DO NOT MODIFY ANYTHING BELOW THIS LINE!**************************/
     /********************************************************************************/
 
     /*************************************************INITIALIZATION*********************************************/
-    var version = 14 // all devices detect new versions and then reload to update
-    myPageTitle = `
-      <h2 id='pageTitle' style='color:white'>`+myPageTitle+`</h2>
-      <h4 style='color:yellow; float:center;' id='currentMode'></h4>
-      <h4 class='headerspan' id='refreshRateMessage'></h4>
-      `;
+    var version = 14 
+
     var lockState = "..."
     var ShortRefreshTime = "" // in seconds ; Beware of ressources. Too low of a value can render your hub inoperable
     
@@ -640,7 +123,7 @@ button.off {
 
     function init(){
       
-      document.getElementById("pageTitle").innerHTML = "Loading data... "
+      document.getElementById("pageTitle").innerHTML = "<h1>Loading data...</h1> "
 
       if(ValidateIPaddress(ip) == false)
       {
@@ -653,7 +136,24 @@ button.off {
       initialized = false; // prevent refresh() from running before buttons are generated
       setTimeout(function(){buildButtons();}, 4000); 
 
-    };
+      const letters = document.querySelectorAll('.letter')
+      setInterval(function() {
+        for(let letter of letters){
+        letter.style.color = randomColor()
+        }
+      }, 5000)
+
+      setBackgroundRandomInterval()
+    }
+
+    let backgroundRandomActive = true
+    function setBackgroundRandomInterval()
+      {
+        const backgroundRandom = setInterval(function() {
+          backgroundCss(false)
+        }, 20000)
+        backgroundRandomActive = true;
+      };
 
     function ValidateIPaddress(ipaddress) 
     {  
@@ -664,6 +164,8 @@ button.off {
       logging("NOT AN IP ADDRESS");
       return (false);
     };
+
+
 
     function defineShortRefreshRate() 
     {
@@ -691,15 +193,15 @@ button.off {
        }
       else // this is a user custom request 
       {
-        if(newVar == 1)
-        {
-          alert("Interval must be 2 or higher!")
-          newVar = 2; // below 2 seconds, asynchronous requests go crazy and interval is less than 1 seconds for some reason (despite recent colde cleaning 3/21/2022). 
-        }
+        // if(newVar == 1)
+        // {
+        //   alert("Interval must be 2 or higher!")
+        //   newVar = 2; // below 2 seconds, asynchronous requests go crazy and interval is less than 1 seconds for some reason (despite recent colde cleaning 3/21/2022). 
+        // }
         newVarStored = parseInt(newVar);
         window.localStorage.setItem('storedRefreshRate', newVarStored); // store the value on local storage
       }
-      location.reload()
+      //location.reload()
     }
 
     function checkVersion() 
@@ -730,9 +232,6 @@ button.off {
       console.log("appNumber:"+appNumber)
       window.localStorage.setItem('appNumber', appNumber);
 
-      myPageTitle = document.getElementById("myPageTitle").value;
-      window.localStorage.setItem('myPageTitle', myPageTitle);
-
       FirstStageRessourceSavingTimeout = document.getElementById("FirstStageRessourceSavingTimeout").value;
       window.localStorage.setItem('FirstStageRessourceSavingTimeout', FirstStageRessourceSavingTimeout);
 
@@ -761,7 +260,7 @@ button.off {
     function getPreferences()
     {
 
-     prefList = [access_token, ip, appNumber, myPageTitle, FirstStageRessourceSavingTimeout, firstStageRessourceSavingInterval, RessourceSavingTime, ressourceSavingTimeout, stopAllScripts, stopAllScriptsTimeout, labelLength]; 
+     prefList = [access_token, ip, appNumber, FirstStageRessourceSavingTimeout, firstStageRessourceSavingInterval, RessourceSavingTime, ressourceSavingTimeout, stopAllScripts, stopAllScriptsTimeout, labelLength]; 
 
      var someNull = prefList.some(element => element == null) || prefList.some(element => element == "null") 
      console.log(prefList)
@@ -770,7 +269,6 @@ button.off {
      console.log("access_token = "+access_token)
      console.log("ip = "+ip)
      console.log("appNumber = "+appNumber)
-     console.log("myPageTitle = "+myPageTitle)
      console.log("FirstStageRessourceSavingTimeout = "+FirstStageRessourceSavingTimeout)
      console.log("firstStageRessourceSavingInterval = "+firstStageRessourceSavingInterval)
      console.log("RessourceSavingTime = "+RessourceSavingTime)
@@ -800,10 +298,7 @@ button.off {
             <td><SPAN style="color:white">Enter your HUB's MakerAPI's app Number</SPAN></td>
             <td><textarea id="appNumber" onchange="testNumber(id)"></textarea></td>  
           </tr> 
-          <tr>
-            <td><SPAN style="color:white">Add a title</SPAN></td>
-            <td><textarea id="myPageTitle" ></textarea> </td> 
-          </tr>
+         
           <tr>
             <td><SPAN style="color:white">First level sleep timeout (in seconds)</SPAN></td>
             <td><textarea id="FirstStageRessourceSavingTimeout" onchange="testNumber(id)"></textarea></td>  
@@ -839,7 +334,6 @@ button.off {
 
       //prefill what can be prefilled. 
       document.getElementById("access_token").value = "access_token=";
-      document.getElementById("myPageTitle").value = "SMART HOME INTERFACE";
       document.getElementById("FirstStageRessourceSavingTimeout").value = "30";
       document.getElementById("firstStageRessourceSavingInterval").value = "10";
       document.getElementById("RessourceSavingTime").value = "120";
@@ -863,7 +357,6 @@ button.off {
         window.localStorage.removeItem('access_token');
         window.localStorage.removeItem('ip');
         window.localStorage.removeItem('appNumber');
-        window.localStorage.removeItem('myPageTitle');
         window.localStorage.removeItem('FirstStageRessourceSavingTimeout');
         window.localStorage.removeItem('firstStageRessourceSavingInterval');
         window.localStorage.removeItem('RessourceSavingTime');
@@ -875,29 +368,7 @@ button.off {
       }
     }
 
-    function setDefaultPreferences()
-    {
-       /* modify this section with your settings to prevent having to enter the access token on all my devices after every test*/
-      /* this will allow you to simply hit the "set default values" on the configuration page, instead of having to re-enter your access token 
-      on every device you might use to display the tiles*/
-      /*
-      document.getElementById("access_token").value = "";
-      document.getElementById("ip").value = "";
-      document.getElementById("appNumber").value = "";
-      */
-      
-      /*Do not modify anything in the section below unless you know what you're doing*/
-      console.log("setting default values")
-
-      document.getElementById("myPageTitle").value = "SMART HOME INTERFACE";
-      document.getElementById("FirstStageRessourceSavingTimeout").value = "30"; // in seconds
-      document.getElementById("firstStageRessourceSavingInterval").value = "10"; // in seconds
-      document.getElementById("RessourceSavingTime").value = "120"; // in seconds
-      document.getElementById("ressourceSavingTimeout").value = "1" // in hours
-      document.getElementById("stopAllScripts").value = false; 
-      document.getElementById("stopAllScriptsTimeout").value = "2" // in hours
-      document.getElementById("labelLength").value = "18"; // number of characters
-    }
+    
 
     function testNumber(id)
     {
@@ -927,57 +398,28 @@ button.off {
       } 
     }
 
+    
     function backgroundCss(userRequest) // attempt to change the background with time of day... not working for now
-    {
-      if(userRequest == true) { backGroundModifiedByUser = !backGroundModifiedByUser }
-        var now = new Date();
-      var currentHour = now.getHours()
-      var currentMinutes = now.getMinutes()
-      var currentSeconds = now.getSeconds()
-      var multiplier = 60 * 60 * 1000
-      var currentHourInMillis = currentHour  *  multiplier
-      var after0  =  currentHourInMillis >= 0  * multiplier && currentHourInMillis < 6  * multiplier
-      var after6  =  currentHourInMillis >= 6  * multiplier && currentHourInMillis < 12 * multiplier
-      var after12 =  currentHourInMillis >= 12 * multiplier && currentHourInMillis < 20 * multiplier
-      var after20 =  currentHourInMillis >= 20 * multiplier && currentHourInMillis < 22 * multiplier
-      var after22 =  currentHourInMillis >= 22 * multiplier 
-      var periodsMap = {"between 1h and  6h" : after0, "between 6h and 12h" : after6, "between 12h and 20h" : after12, "after 20h" : after20, "after 22h" : after22};
-      /*
-      see https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce to understand the reduce() method 
-      this is the callback function executed once for each element and ignores empty elements. 
-      */
-      var currentPeriod = Object.keys(periodsMap).reduce((a, c) => {
-        if (periodsMap[c] === true) {
-          currentPeriod = c
-          logging("currentPeriod = "+currentPeriod)
+    {  
+      // console.log("userRequest = "+userRequest)
+      if(userRequest) {
+        backGroundModifiedByUser = !backGroundModifiedByUser
+        if(backGroundModifiedByUser)
+        {
+          clearInterval("backgroundRandom")
+          setTimeout(function(){document.body.style.background = randomColor();}, 500);
         }
-        return c
-      }, []);      
-      var cssBody = ""
-      var currentTime = currentHour + ":" + currentMinutes + ":" + currentSeconds + ":"
-      var color;
-      var colorDisplayName;
-      if(!backGroundModifiedByUser && !userRequest)
-      {
-        logging("blob............")
-        if(after0) {color = backgroundColor;colorDisplayName = Object.keys({backgroundColor})[0]} // Object.keys here allows to log the var name
-        if(after6) {color = backgroundColor2;colorDisplayName = Object.keys({backgroundColor2})[0]}
-        if(after12) {color = backgroundColor3;colorDisplayName = Object.keys({backgroundColor3})[0]}
-        if(after20) {color = backgroundColor4;colorDisplayName = Object.keys({backgroundColor4})[0]}
-        if(after22) {color = backgroundColor5;colorDisplayName = Object.keys({backgroundColor5})[0]}
-        logging("current time period = "+currentPeriod+" now: "+currentTime+" color:"+colorDisplayName)
+        else if(!backgroundRandomActive)
+        {
+          console.log("restoring backgroundRandom interval");
+          setBackgroundRandomInterval();
+        }
       }
-      else if(userRequest)
-      {
-        logging("USER REQUEST")
-        var colorsArray = [backgroundColor, backgroundColor2, backgroundColor3, backgroundColor4, backgroundColor5]
-        color = colorsArray[Math.floor(Math.random()*colorsArray.length)]; // pick a color randomly    
-      }  
-      logging(color)
-      colorDisplayName = color == backgroundColor ? "backgroundColor" : color == backgroundColor2 ?  "backgroundColor2" : color == backgroundColor3 ? "backgroundColor3" : color == backgroundColor4 ? "backgroundColor4" : color == backgroundColor5 ? "backgroundColor5" : "error"
-      logging("current time period = "+currentPeriod+" now: "+currentTime+" color:"+colorDisplayName)
-      logging("colorDisplayName ="+colorDisplayName)
-      document.body.style.background = color
+      // console.log("userRequest = "+backGroundModifiedByUser)
+      if(!backGroundModifiedByUser && !userRequest)
+      {  
+        document.body.style.background = randomColor()
+      }
     }
 
     function buildButtons()//
@@ -992,10 +434,9 @@ button.off {
         {
           location.reload();
         }
-        return;
+        return
       }
       loadCounter = 0
-
       var s = allDevices.length;
       var lasti = i; 
       var lastiLights = i;   
@@ -1014,8 +455,8 @@ button.off {
       setTimeout(function(){sliderEventListener();}, 2000); // must be called last for db to be updated
       setTimeout(function(){getMode();}, 2000);
       var checkModeInterval = setInterval(function(){getMode();}, 10000);  
+      setInterval(function(){location.reload();}, 24 * 60 * 60 * 1000); // reload the page every 24 hours 
       toggleDebug(true)
-      document.getElementById("pageTitle").innerHTML = myPageTitle;
       setTimeout(function(){ setRefreshInterval("reset"); }, FirstStageRessourceSavingTimeout * 1000);
       setRefreshInterval("reset"); //set refresh interval
       setTimeout(function(){refresh("buildButtons()/init()");}, 3000);
@@ -1082,20 +523,20 @@ button.off {
 
             if(isContact)
             {
-              x += `<div  style="float:left; height:var(--buttonSize); width:var(--buttonSize);">          
+              x += `<div  style="height:var(--buttonSize); width:var(--buttonSize);">          
               <button id='`+deviceId+`' onclick='toggleDevice(cmdSwitch,id)'>`+deviceLabel.toLowerCase()+`</button>
               </div>`; 
             }
             else if(isLight)
             {
               thereIsLight = true 
-              lights +=  `<div style="float:left; height:var(--buttonSize); width:var(--buttonSize);">          
+              lights +=  `<div style="height:var(--buttonSize); width:var(--buttonSize);">          
               <button id='`+deviceId+`'onclick='toggleDevice(cmdSwitch,id)'>`+deviceLabel.toLowerCase()+`</button>
               </div>`;  
             }
             else 
             {
-              x += `<div style="float:left; height:var(--buttonSize); width:var(--buttonSize);">          
+              x += `<div style="height:var(--buttonSize); width:var(--buttonSize);">          
               <button id='`+deviceId+`'onclick='toggleDevice(cmdSwitch,id)'>`+deviceLabel.toLowerCase()+`</button>
               </div>`;  
             }
@@ -1105,13 +546,13 @@ button.off {
             if(isLight)
             {
               thereIsLight = true 
-              lights +=  `<div style="float:left; height:var(--buttonSize); width:var(--buttonSize);">          
+              lights +=  `<div style="height:var(--buttonSize); width:var(--buttonSize);">          
               <button id='`+deviceId+`'onclick='toggleDevice(cmdSwitch,id)'>`+deviceLabel.toLowerCase()+`</button>
               </div>`;  
             }
             else 
             {
-              x += `<div style="float:left; height:var(--buttonSize); width:var(--buttonSize);">         
+              x += `<div style="height:var(--buttonSize); width:var(--buttonSize);">         
               <button id='`+deviceId+`' onclick='toggleDevice(cmdSwitch,id)'>`+deviceLabel.toLowerCase()+`</button>
               </div>`;  
             }
@@ -1206,15 +647,15 @@ button.off {
           var buttId = deviceId+"button"
           a += `
           <div style="margin-top:50px; float:left; height:200px; width:var(--buttonSize);"> 
-          <div style="float:left; height:20px; width:var(--buttonSize);">
-          <span class="sliderSpanName">`+deviceLabel+`</span>        
-          </div> 
-          <div style="margin-top:80px; margin-left:-50px; float:left; height:200px; width:var(--buttonSize);">  
-          <input type='range' orient='vertical' min='0' max='99' step='1' id='`+deviceId+`' onchange='setLevel(id, value)'>
-          <div style="margin-top:0px;margin-left:100px;">
-          <span class="sliderSpanVal" id=`+spanSliderId+`></span>
-          </div>      
-          </div> 
+            <div style="float:left; height:20px; width:var(--buttonSize);">
+              <span class="sliderSpanName">`+deviceLabel+`</span>        
+            </div> 
+            <div style="margin-top:80px; margin-left:30px; float:left; height:200px; width:var(--buttonSize);">  
+              <input type='range' orient='vertical' min='0' max='99' step='1' id='`+deviceId+`' onchange='setLevel(id, value)'>
+              <div style="margin-top:-100px;margin-left:20px;">
+                <span class="sliderSpanVal" id=`+spanSliderId+`></span>
+              </div>      
+            </div> 
           </div> 
           `;
           
@@ -1419,6 +860,74 @@ button.off {
       setTimeout(function(){refresh("fromRFA")}, 500); // give time for data collection due to the asyncrhonus nature of ajax. 
     };
 
+    function toRGB(rgbstring) {
+
+    if(rgbstring.length > 1)
+    {
+      var rgb = rgbstring.split( ',' ) ;
+      r=parseInt( rgb[0].substring(4) ) ; // skip the first 4 chars "rgb("
+      g=parseInt( rgb[1] ) ; // this is just g
+      b=parseInt( rgb[2] ) ; // 
+
+      // console.log("rgb as list = ", rgb)
+
+      let result = [r, g, b]
+      // console.log(result)
+      
+      return result 
+
+      }
+      else {
+        console.log ("no rgb value yet")
+        return rgbstring
+      }
+
+    }
+
+    
+    var DOMloaded = false; 
+
+    document.addEventListener('DOMContentLoaded', function(event) {  
+      console.log("DOM FULLY LOADED")  
+      DOMloaded = true;
+      document.querySelector("body").style.background = "rgb(7, 141, 216)"
+    })
+
+    function randomColor()
+    {
+      if(!DOMloaded) return 
+
+      let r = Math.floor(Math.random() * 256);
+      let g = Math.floor(Math.random() * 256);
+      let b = Math.floor(Math.random() * 256);
+
+      let result = `rgb(${r}, ${g}, ${b})`
+
+      //rgb(7, 141, 216) is the slider's background color, so prevent this one from being generated
+
+      const currentBackgroundColor = document.querySelector('body').style.background
+
+      const curRgb = toRGB(currentBackgroundColor)
+      // console.log("curRgb: ", curRgb)
+
+      // return result;
+
+      let curR = curRgb[0]
+      let curG = curRgb[1]
+      let curB = curRgb[2]
+      let offset = 50
+
+      if((r < curR + offset || r > curR - offset) && (g < curG + offset || g > curG - offset) && (b < curB + offset || b > curB - offset))
+      {
+        // console.log(`new background color: rgb(${r}, ${g}, ${b})`)
+        return result;
+      } 
+      else 
+      {
+        console.log(`rgb(${r}, ${g}, ${b} is too close to ${curRgb}`)
+      }   
+    }
+
     function refresh(origin)
     {
       logging("refresh("+origin+")")
@@ -1435,6 +944,9 @@ button.off {
         
         return
       };
+      const pageTitleElement = document.getElementById("pageTitle")
+      if(pageTitleElement != null) pageTitleElement.remove() // once data is loaded, delete this message
+
       loadCounter = 0
       var s = allDevices.length;
       // var s = allDevicesLabelsSorted.length;
@@ -1548,7 +1060,6 @@ button.off {
         logging("a="+a+"/"+i);
         logging("b="+b+"/"+i); 
       }
-      backgroundCss(false);
       logging("allDevices = "+JSON.stringify(allDevices));
       logging(switchStateValues);
     };
@@ -1678,10 +1189,13 @@ button.off {
     /*******************************END OF DEVICE COMMANDS**************************************/
     function eventListeners()
     {
+      const form = document.getElementById("submitBtnRefreshRate")
+      const refreshText = document.getElementById("refreshRate")
       inputRefreshRate.addEventListener("keyup", function(event) {
         if (event.keyCode === 13) {
           event.preventDefault();
-          document.getElementById("submitBtnRefreshRate").click();
+          form.click();
+          alert("refresh rate updated to "+refreshText.value+" seconds")
         }
       });
     }
@@ -1699,8 +1213,7 @@ button.off {
     });
 
     function mouseEventListener() {
-      document.getElementById("mainDiv").addEventListener("mousemove", function(event) {
-        logging("...")
+      document.querySelector('body').addEventListener("mousemove", function(event) {
       setRefreshInterval("reset"); // resume normal interval
     });
       console.log("event listner")
@@ -1745,7 +1258,6 @@ button.off {
       
       slider.oninput = function() //allows to see changes as the cursor is being moved
       {
-        console.log("raratatatata")
         this.style.background = `linear-gradient(to right, red 0%, red ${(this.value-this.min)/(this.max-this.min)*100}%, #DEE2E6 ${(this.value-this.min)/(this.max-this.min)*100}%, #DEE2E6 100%)`
         //updates cursor and number value once input done
         output.value = slider.value; // update the slider position
@@ -1799,7 +1311,7 @@ button.off {
       if(refInterval === NaN) refInterval = 4; 
 
       refreshState = "refresh rate is "+refInterval/1000+" seconds"; // value to display on top of the page
-      console.log(refreshState)
+      //console.log(refreshState)
       var ob = document.getElementById("refreshRateMessage")
       if(ob != undefined) ob.innerHTML = refreshState;  
 
@@ -1855,5 +1367,3 @@ button.off {
         }    
       }
     };
-  </script>
-  </html>
